@@ -1,14 +1,26 @@
 {
-    "name": "AQL3",
+    "name": "AQL3WS",
     "version": "0.0.0",
-    "description": "",
-    "main": "app.js",
+    "description": "AQL 3 Web Server",
+    "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node src/app.js",
+        "dev": "nodemon src/app.js -e js,hbs,css"
     },
     "author": "Kevin Benton",
     "license": "GPLv2",
     "dependencies": {
+        "express": "4.17.1",
+        "hbs": "^4.1.1",
         "mariadb": "^2.4.2",
+        "path": "^0.12.7",
+        "request": "^2.88.2",
+        "validator": "^13.1.1"
     },
+    "devDependencies": {
+        "env-cmd": "^10.0.1",
+        "jest": "^25.1.0",
+        "nodemon": "^2.0.2"
+    }
 }
