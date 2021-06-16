@@ -29,11 +29,10 @@ app.set('views', viewsPath)
 app.use(express.static(publicDirectoryPath))
 
 app.get('', (req, res) => {
-    res.send('Hello world!\n')
-//    res.render('index', {
-//        title: appTitle,
-//        name: appAuthor
-//    })
+    res.render('index', {
+        title: appTitle,
+        name: appAuthor
+    })
 })
 
 app.get('/about', (req, res) => {
