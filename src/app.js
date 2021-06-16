@@ -17,7 +17,7 @@ const publicDirectoryPath = path.join(__dirname, '../public')
 const viewsPath = path.join(__dirname, '../templates/views')
 const partialsPath = path.join(__dirname, '../templates/partials')
 
-const appTitle = 'Activ Query Listing 3'
+const appTitle = 'Active Query Listing 3 for MySQL'
 const appAuthor = 'Kevin Benton'
 
 // Setup handlebars engine and views location
@@ -31,21 +31,28 @@ app.use(express.static(publicDirectoryPath))
 app.get('', (req, res) => {
     res.render('index', {
         title: appTitle,
-        name: appAuthor
+        author: appAuthor
+    })
+})
+
+app.get('/', (req, res) => {
+    res.render('index', {
+        title: appTitle,
+        author: appAuthor
     })
 })
 
 app.get('/about', (req, res) => {
     res.render('about', {
         title: 'About AQL3',
-        name: appAuthor
+        author: appAuthor
     })
 })
 
 app.get('/help', (req, res) => {
     res.render('help', {
         title: 'Help Page',
-        name: appAuthor,
+        author: appAuthor,
         helpMsg: 'This is some help.'
     })
 })
@@ -66,7 +73,7 @@ app.get('/products', (req, res) => {
 app.get("/help/*", (req, res) => {
     res.render('404', {
         title: '404',
-        name: 'Kevin Benton',
+        author: appAuthor,
         errorMsg: 'Help article not found.'
     })
 })
@@ -75,7 +82,7 @@ app.get("/help/*", (req, res) => {
 app.get('*', (req, res) => {
     res.render('404', {
         title: '404',
-        name: 'Kevin Benton',
+        author: appAuthor,
         errorMsg: 'Page not found.'
     })
 })
