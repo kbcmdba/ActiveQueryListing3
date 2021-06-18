@@ -20,10 +20,11 @@ const partialsPath = path.join(__dirname, '../templates/partials')
 const appTitle = 'Active Query Listing 3 for MySQL'
 const appAuthor = 'Kevin Benton'
 
-// Setup handlebars engine and views location
+const hostList = [ '127.0.0.1', 'rpi6e' ]
+
 app.set('view engine', 'hbs')
 app.set('views', viewsPath)
-// hbs.registerPartials(partialsPath)
+hbs.registerPartials(partialsPath)
 
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath))
@@ -59,14 +60,10 @@ app.get('/help', (req, res) => {
 
 app.get('/server-list', (req, res) => {
     if (!req.query.search) {
-        return res.send({
-            error: 'You must provide a search term'
-        })
+        return res.send(JSON.stringify(hostList) + "\n")
     }
     console.log(req.query)
-    res.send({
-        products: []
-    })
+    return res.send(JSON.stringify(hostList) + "\n")
 })
 
 
@@ -98,7 +95,6 @@ app.get('/server-queries', (req, res) => {
 app.get("/help/*", (req, res) => {
     res.render('404', {
         title: '404',
-        author: appAuthor,
         errorMsg: 'Help article not found.'
     })
 })
@@ -107,7 +103,6 @@ app.get("/help/*", (req, res) => {
 app.get('*', (req, res) => {
     res.render('404', {
         title: '404',
-        author: appAuthor,
         errorMsg: 'Page not found.'
     })
 })
