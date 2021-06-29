@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ title }}</title>
+    {% block headAddOns %}{% endblock %}
+  </head>
+  <body>
+    {% if pageTop %} {{ pageTop }} {% else %}
+    <div class="title">{{ title }}</div>
+      {% if author %}<div class="author">By: {{ author }}</div>{% endif %}
+    {% endif %}
+    {% block body %}
+    This is pageLayout.html.j2
+    {% endblock %}
+  </body>
+</html>

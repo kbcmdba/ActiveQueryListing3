@@ -1,0 +1,7 @@
+{% extends "pageLayout.html.j2" %}
+
+{# This is a comment #}
+{% block body %}
+    {# apply custom function and next build-in and custom filters #}
+    {{ myFunc(smthVar) | lower | myFilter(5, 'abc') }} 
+{% endblock %}
