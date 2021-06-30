@@ -45,15 +45,13 @@ app.get( '', function( req, res ) {
     res.render( 'index.html.j2', {
         title: appTitle, 
         author: appAuthor,
-        refreshSeconds: 30
     } )
 })
 
 app.get( '/', function( req, res ) {
     res.render( 'index.html.j2', {
         title: appTitle, 
-        author: appAuthor,
-        refreshSeconds: 60
+        author: appAuthor
     } )
 })
 

@@ -7,12 +7,8 @@
     {% block headAddOns %}{% endblock %}
   </head>
   <body>
-    {% if pageTop %} {{ pageTop }} {% else %}
-    <div class="title">{{ title }}</div>
-      {% if author %}<div class="author">By: {{ author }}</div>{% endif %}
-    {% endif %}
-    {% block body %}
-    This is pageLayout.html.j2
-    {% endblock %}
+{% block pageTop %}    <div class="title">{{ title }}</div>
+{% if author %}    <div class="author">By: {{ author }}</div>{% endif %}{% endblock %}
+{% block body %}    This is pageLayout.html.j2{% endblock %}
   </body>
 </html>

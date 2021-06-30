@@ -1,11 +1,8 @@
 {% extends "pageLayout.html.j2" %}
 
-{% block headAddOns %}<meta http-equiv="refresh" content="{{ refreshSeconds }}" />{% endblock %}
+{% block headAddOns %}<meta http-equiv="refresh" content="{% if refreshSeconds %}{{ refreshSeconds }}{% else %}60{% endif %}" />{% endblock %}
 
-{% block body %}
-      <div class="TopRight">Updated: {{ getDate() }}</div>
-{% endblock %}
+{% block pageTop %}    <div class="title">{{ title }}</div>
+    {% if author %}<div class="author">By: {{ author }}</div>{% endif %}{% endblock %}
 
-{% block pageTop %}
-    <div class="title">{{ title }}</div>222
-{% endblock %}
+{% block body %}    <div class="TopRight">Updated: {{ getDate() }}</div>{% endblock %}
