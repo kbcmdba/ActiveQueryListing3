@@ -18,6 +18,8 @@ app.use( express.static( publicDirectoryPath, {
 const appTitle = 'Active Query Listing 3 for MySQL'
 const appAuthor = 'Kevin Benton'
 
+// This really should be code that would get the list of available hosts from
+// the database server.
 const hostList = [ '127.0.0.1', 'rpi6e' ]
 
 const env = nunjucks.configure( [ viewsPath ], {
@@ -83,17 +85,39 @@ app.get('/server-list', (req, res) => {
     return res.send(JSON.stringify(hostList) + "\n")
 })
 
+function hostQueryList( host ) {
+    return([])
+}
+
+function replicationStatus( host ) {
+    return([])
+}
+
+function getHostInfo( host ) {
+    return({
+        hostname: host,
+        processList: hostQueryList( host ),
+        replicationStatus: replicationStatus( host ),
+        upTime: -1,
+        loadLevel: -1
+    })
+}
 
 app.get('/server-info', (req, res) => {
-    if (!req.query.search) {
-        return res.send({
+    if (!req.query.host) {
+        return res.send(JSON.stringify({
             error: 'You must provide a search term'
-        })
+        }) + '\n')
     }
-    console.log(req.query)
-    res.send({
-        products: []
-    })
+    console.log( req.query )
+    if (! hostList.includes( req.query.host ) ) {
+        return res.send(JSON.stringify({
+            error: "Host not supported."
+        }) + '\n')
+    }
+    // This is where we could get the show processlist info from the remote host as
+    // well as the replication status
+    res.send(JSON.stringify(getHostInfo(req.query.host)) + '\n')
 })
 
 app.get('/server-queries', (req, res) => {

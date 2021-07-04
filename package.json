@@ -6,7 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node src/app.js",
-        "dev": "nodemon src/app.js -e js,hbs,css"
+        "dev": "nodemon src/app.js -e js,j2,css"
     },
     "author": "Kevin Benton",
     "license": "GPLv2",
@@ -15,6 +15,7 @@
         "mariadb": "^2.4.2",
         "nunjucks": "^3.2.3",
         "path": "^0.12.7",
+        "redis": "^3.1.2",
         "request": "^2.88.2",
         "validator": "^13.1.1"
     },

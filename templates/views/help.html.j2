@@ -1,4 +1,9 @@
-{{> top}}
-<div>{{ helpMsg }}</div>
-{{> bottom}}
+{% extends "pageLayout.html.j2" %}
+
+{% block headAddOns %}{% endblock %}
+
+{% block pageTop %}    <div class="title">{{ title }}</div>
+    {% if author %}<div class="author">By: {{ author }}</div>{% endif %}{% endblock %}
+
+{% block body %}{{ helpMsg }}{% endblock %}
 

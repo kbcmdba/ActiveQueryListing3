@@ -1,9 +1,13 @@
-{{> top}}
+{% extends "pageLayout.html.j2" %}
 
+{% block headAddOns %}{% endblock %}
+
+{% block pageTop %}    <div class="title">{{ title }}</div>
+    {% if author %}<div class="author">By: {{ author }}</div>{% endif %}{% endblock %}
+
+{% block body %}
 <p />
-{{ title }} is a way to monitor active queries on MySQL instances from a
-web interface. This makes it easier for non-DBAs to see what's happening
-with queries in the database. If there are long-running queries, they'll
-show up in this tool.
-
-{{> bottom}}
+AQL3 is a way to monitor active queries on MySQL instances from a web interface.
+This makes it easier for non-DBAs to see what's happening with queries in the
+database. If there are long-running queries, they'll show up in this tool.
+{% endblock %}
