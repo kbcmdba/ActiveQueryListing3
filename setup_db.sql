@@ -24,6 +24,20 @@
 -- WARNING - using this script will wipe out any existing data in
 -- aql3_db so make sure you take a backup first if it's needed.
 
+-- For this to work effectively, you will need to grant the appropriate
+-- access to the appropriate user.
+
+-- In MariaDB (assuming you're just granting to app_aql@127.0.0.1):
+--
+-- GRANT PROCESS, SLAVE MONITOR ON *.* TO 'app_aql'@'127.0.0.1' IDENTIFIED BY ...
+-- GRANT ALL ON aql3_db.* TO 'app_aql'@'127.0.0.1' ;
+
+-- In Oracle's MySQL:
+--
+-- GRANT PROCESS, REPLICATION_CLIENT ON *.* to 'app_aql'@'127.0.0.1' IDENTIFIED BY ...
+-- GRANT ALL ON aql3_db.* to 'app_aql'@'127.0.0.1' ;
+
+
 DROP DATABASE IF EXISTS aql3_db ;
 CREATE DATABASE aql3_db ;
 USE aql3_db ;
