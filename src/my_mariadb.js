@@ -25,19 +25,27 @@ async function _doMySQLStatement( hostname, statement ) {
     return( results )
 }
 
+async function getHostList() {
+    host = process.env.DB_HOST
+    sql = 'SELECT hostname FROM aql3_db.host ' +
+           'WHERE should_monitor = 1 AND decommissioned = 0'
+    return( await _doMySQLStatement( host, sql ) )
+}
+
 async function getProcessList( hostname ) {
-    return( _doMySQLStatement( hostname, "SHOW FULL PROCESSLIST" ) )
+    return( await _doMySQLStatement( hostname, "SHOW FULL PROCESSLIST" ) )
 }
 
 async function getReplicationStatus( hostname ) {
-    return( _doMySQLStatement( hostname, "SHOW SLAVE STATUS" ) )
+    return( await _doMySQLStatement( hostname, "SHOW SLAVE STATUS" ) )
 }
 
 async function getUptime( hostname ) {
-     return( _doMySQLStatement( hostname, "SHOW GLOBAL STATUS LIKE 'uptime'" ) )
+     return( await _doMySQLStatement( hostname, "SHOW GLOBAL STATUS LIKE 'uptime'" ) )
 }
 
 module.exports = {
+    getHostList: getHostList,
     getProcessList: getProcessList,
     getReplicationStatus: getReplicationStatus,
     getUptime: getUptime

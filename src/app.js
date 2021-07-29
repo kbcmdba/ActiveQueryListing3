@@ -28,7 +28,7 @@ redisClient.set('redisCheck', 'allIsWell', (err, res) => {
     if (err) {
         return(console.log(err))
     }
-    console.log(res)
+    console.log( 'set.redisCheck', res)
 })
 
 redisClient.expire('redisCheck', 3)
@@ -37,20 +37,48 @@ redisClient.get('redisCheck', (err, res) => {
     if (err) {
         return( console.log( err ) )
     }
-    console.log( res )
+    console.log( 'get.redisCheck', res )
 })
 
 const appTitle = 'Active Query Listing 3 for MySQL'
 const appAuthor = 'Kevin Benton'
 
-// This really should be code that would get the list of available hosts from
-// the database server.
-const hostList = [ '127.0.0.1', 'rpi6e' ]
+const myGetHostList = async() => {
+    hostListResult = await mymariadb.getHostList()
+    return( hostListResult.map( x => x[ 'hostname' ] ) )
+}
+
+var customConfig = {
+    hostList: []
+}
+
+myGetHostList().then( val => customConfig.hostList = val )
 
 const env = nunjucks.configure( [ viewsPath ], {
     autoescape: true, 
     express: app
 })
+
+const hostQueryList = async( host ) => await mymariadb.getProcessList( host )
+const replicationStatus = async( host ) => await mymariadb.getReplicationStatus( host )
+
+async function getUptime( host ) {
+    var foo = await mymariadb.getUptime( host )
+    return( foo[0].Value )
+}
+
+async function getHostInfo( host ) {
+    hql = await hostQueryList( host )
+    rs = await replicationStatus( host )
+    ut = await getUptime( host )
+    return({
+        hostname: host,
+        processList: hql,
+        replicationStatus: rs,
+        upTimeSeconds: ut,
+        loadLevel: -1
+    })
+}
 
 env.addFilter( 'myFilter', ( obj, arg1, arg2 ) => {
     console.log('myFilter', obj, arg1, arg2 )
@@ -104,46 +132,18 @@ app.get('/help', (req, res) => {
 
 app.get('/server-list', (req, res) => {
     if (!req.query.search) {
-        return res.send(JSON.stringify(hostList) + '\n')
+        return res.send(JSON.stringify(customConfig.hostList) + '\n')
     }
-    console.log(req.query)
-    return res.send(JSON.stringify(hostList) + '\n')
+    console.log( '/server-list', req.query)
+    return res.send(JSON.stringify(customConfig.hostList) + '\n')
 })
-
-async function hostQueryList( host ) {
-    var foo = await mymariadb.getProcessList( host )
-    return( foo )
-}
-
-async function replicationStatus( host ) {
-    var foo = await mymariadb.getReplicationStatus( host )
-    return( foo )
-}
-
-async function getUptime( host ) {
-    var foo = await mymariadb.getUptime( host )
-    return( foo[0].Value )
-}
-
-async function getHostInfo( host ) {
-    hql = await hostQueryList( host )
-    rs = await replicationStatus( host )
-    ut = await getUptime( host )
-    return({
-        hostname: host,
-        processList: hql,
-        replicationStatus: rs,
-        upTimeSeconds: ut,
-        loadLevel: -1
-    })
-}
 
 app.get('/server-info', async(req, res) => {
     if ( ! req.query.host ) {
         return res.send(JSON.stringify({ error: 'You must provide a search term' }) + '\n')
     }
-    console.log( req.query )
-    if (! hostList.includes( req.query.host ) ) {
+    console.log( '/server-info', req.query )
+    if (! customConfig.hostList.includes( req.query.host ) ) {
         return res.send(JSON.stringify({
             error: 'Host not supported.'
         }) + '\n')
@@ -158,8 +158,8 @@ app.get('/server-queries', async(req, res) => {
     if ( ! req.query.host ) {
         return res.send(JSON.stringify({ error: 'You must provide a search term' }) + '\n')
     }
-    console.log( req.query )
-    if (! hostList.includes( req.query.host ) ) {
+    console.log( '/server-queries', req.query )
+    if (! customConfig.hostList.includes( req.query.host ) ) {
         return res.send(JSON.stringify({
             error: 'Host not supported.'
         }) + '\n')
@@ -168,9 +168,23 @@ app.get('/server-queries', async(req, res) => {
     res.send( JSON.stringify( hql ) + '\n')
 })
 
+app.get('/server-slave-status', async(req, res) => {
+    if ( ! req.query.host ) {
+        return res.send(JSON.stringify({ error: 'You must provide a search term' }) + '\n')
+    }
+    console.log( '/server-slave-status', req.query )
+    if (! customConfig.hostList.includes( req.query.host ) ) {
+        return res.send(JSON.stringify({
+            error: 'Host not supported.'
+        }) + '\n')
+    }
+    rs = await replicationStatus( req.query.host )
+    res.send( JSON.stringify( rs ) + '\n')
+})
+
 // Help 404 handler
 app.get('/help/*', (req, res) => {
-    res.render('404', {
+    res.render( '404.html.j2', {
         title: '404',
         errorMsg: 'Help article not found.'
     })
@@ -178,7 +192,7 @@ app.get('/help/*', (req, res) => {
 
 // Generic 404 handler
 app.get('*', (req, res) => {
-    res.render('404', {
+    res.render( '404.html.j2', {
         title: '404',
         errorMsg: 'Page not found.'
     })

@@ -1,5 +1,3 @@
-{{> top}}
+{% extends "pageLayout.html.j2" %}
 
-<h2>{{ errorMsg }}</h2>
-
-{{> bottom}}
+{% block body %}    {{ errorMsg }}{% endblock %}
