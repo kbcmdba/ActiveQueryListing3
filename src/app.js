@@ -1,8 +1,11 @@
 const path = require( 'path' )
 const express = require( 'express' )
-const nunjucks = require( 'nunjucks' )
 const app = express()
+const nunjucks = require( 'nunjucks' )
+const redis = require( 'redis' )
+
 const port = process.env.PORT || 8080
+const mymariadb = require( './my_mariadb' )
 
 // Define paths for Express config
 const publicDirectoryPath = path.join( __dirname, '../public' )
@@ -14,9 +17,6 @@ app.use( express.static( publicDirectoryPath, {
   extensions: [ 'htm', 'html' ],
   index: false
 } ) )
-
-const mymariadb = require( './my_mariadb' )
-const redis = require( 'redis' )
 
 const redisClient = redis.createClient()
 
@@ -40,15 +40,14 @@ redisClient.get('redisCheck', (err, res) => {
     console.log( 'get.redisCheck', res )
 })
 
-const appTitle = 'Active Query Listing 3 for MySQL'
-const appAuthor = 'Kevin Benton'
-
 const myGetHostList = async() => {
     hostListResult = await mymariadb.getHostList()
     return( hostListResult.map( x => x[ 'hostname' ] ) )
 }
 
 var customConfig = {
+    appTitle: 'Active Query Listing 3 for MySQL',
+    appAuthor: 'Kevin Benton',
     hostList: []
 }
 
@@ -97,16 +96,18 @@ env.addGlobal( 'getDate', ( obj ) => {
 } )
 
 app.get( '', ( req, res ) => {
+    console.log( 'root:', req.query )
     res.render( 'index.html.j2', {
-        title: appTitle, 
-        author: appAuthor,
+        config: customConfig
     } )
 })
 
 app.get( '/', ( req, res ) => {
+    console.log( 'root:/', req.query )
     res.render( 'index.html.j2', {
-        title: appTitle, 
-        author: appAuthor
+        title: customConfig.appTitle, 
+        author: customConfig.appAuthor,
+        config: customConfig
     } )
 })
 
