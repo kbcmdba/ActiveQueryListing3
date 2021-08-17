@@ -97,18 +97,12 @@ env.addGlobal( 'getDate', ( obj ) => {
 
 app.get( '', ( req, res ) => {
     console.log( 'root:', req.query )
-    res.render( 'index.html.j2', {
-        config: customConfig
-    } )
+    res.render( 'index.html.j2', { config: customConfig } )
 })
 
 app.get( '/', ( req, res ) => {
     console.log( 'root:/', req.query )
-    res.render( 'index.html.j2', {
-        title: customConfig.appTitle, 
-        author: customConfig.appAuthor,
-        config: customConfig
-    } )
+    res.render( 'index.html.j2', { config: customConfig } )
 })
 
 app.get( '/foo', ( req, res ) => {
