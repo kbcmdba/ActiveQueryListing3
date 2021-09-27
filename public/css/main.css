@@ -1,1 +1,7 @@
 
+.error  { text: white; background-color: red;        }
+.level4 { text: black; background-color: orange;     }
+.level3 { text: black; background-color: yellow;     }
+.level2 { text: black; background-color: lightgreen; }
+.level1 { text: black; background-color: cyan;       }
+.level0 { text: black; background-color: white;      }
