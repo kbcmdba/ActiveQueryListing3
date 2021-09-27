@@ -14,4 +14,33 @@
       {% for host in config.hostList %}<li>{{ host }}</li>{% endfor %}
     </ul>
     </div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Server</th>
+      <th>Alert<br />Level</th>
+      <th>Thread<br />ID</th>
+      <th>User</th>
+      <th>From<br />Host</th>
+      <th>DB</th>
+      <th>Command <a href="https://dev.mysql.com/doc/refman/5.6/en/thread-commands.html" target="_blank">?</a></th>
+      <th>Time<br />Secs</th>
+      <th>Friendly<br>Time</th>
+      <th>State <a href="https://dev.mysql.com/doc/refman/5.6/en/general-thread-states.html" target="_blank">?</a></th>
+      <th>R/O</th>
+      <th>Dupe <a onclick="alert('Possible states are Unique, Similar, Duplicate and Blank. Similar indicates that a query is identical to another query except that the numbers and strings may be different. Duplicate means the entire query is identical to another query.') ; return false;">?</a><br>State</th>
+      <th>Info</th>
+      <th>Actions</th>
+    </tr>
+
+  </thead>
+  <tbody id="tbodyid">
+    <tr id="figment">
+      <td colspan="14">
+        <center>Data loading</center>
+      </td>
+    </tr>
+  </tbody>
+</table>
 {% endblock %}
