@@ -47,7 +47,6 @@ const myGetHostList = async() => {
 
 var customConfig = {
     appTitle: 'Active Query Listing 3 for MySQL',
-    appAuthor: 'Kevin Benton',
     hostList: []
 }
 
@@ -97,11 +96,13 @@ env.addGlobal( 'getDate', ( obj ) => {
 
 app.get( '', ( req, res ) => {
     console.log( 'root:', req.query )
+    customConfig.appAuthor = 'Kevin Benton'
     res.render( 'index.html.j2', { config: customConfig } )
 })
 
 app.get( '/', ( req, res ) => {
     console.log( 'root:/', req.query )
+    customConfig.appAuthor = 'Kevin Benton'
     res.render( 'index.html.j2', { config: customConfig } )
 })
 
