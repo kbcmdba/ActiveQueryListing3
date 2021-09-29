@@ -7,11 +7,13 @@
     <button id="toggleButton" onclick="togglePageRefresh(); return false;">Turn Automatic Refresh Off</button>
 {% endblock %}
 
+{% var hostCount = 0 %}
+
 {% block body %}
     <div class="TopRight">Updated: {{ getDate() }}</div>
     <div class="HostList">
     <ul>
-      {% for host in config.hostList %}<li>{{ host }}</li>{% endfor %}
+      {% for host in config.hostList %}<li>{{ host }}</li>{% hostCount++ %}{% endfor %}
     </ul>
     </div>
 
@@ -38,7 +40,7 @@
   <tbody id="tbodyid">
     <tr id="figment">
       <td colspan="14">
-        <center>Data loading</center>
+        <center>Data loading for <span id="hostCount">{% hostCount %}</span> hosts.</center>
       </td>
     </tr>
   </tbody>
