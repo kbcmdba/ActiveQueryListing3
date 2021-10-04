@@ -5,3 +5,5 @@
 .level2 { text: black; background-color: lightgreen; }
 .level1 { text: black; background-color: cyan;       }
 .level0 { text: black; background-color: white;      }
+
+table thead th { text: black bold; background-color: silver; }
