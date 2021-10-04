@@ -11,12 +11,6 @@
 
 {% block body %}
     <div class="TopRight">Updated: {{ getDate() }}</div>
-    <div class="HostList">
-<!--    <ul>
-      {% for host in config.hostList %}<li>{{ host }}</li>{% set hostCount = hostCount + 1 %}{% endfor %}
-    </ul>
-    </div> -->
-{% set hostsToDisplay = host | length %}
 
 <table width="100%">
   <thead>
@@ -39,9 +33,10 @@
 
   </thead>
   <tbody id="tbodyid">
-    <tr id="figment">
+    {% for host in config.hostList %}<li>{{ host }}</li>{% set hostCount = hostCount + 1 %}{% endfor %}
+    <tr id="figment-{{ host }}">
       <td colspan="14">
-        <center>Data loading for <span id="hostCount">{{ hostCount }}</span> host(s).</center>
+        <center>Data loading for <a href="">{{ host }}</a>.</center>
       </td>
     </tr>
   </tbody>
