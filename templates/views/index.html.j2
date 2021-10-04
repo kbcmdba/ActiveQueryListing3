@@ -16,6 +16,7 @@
       {% for host in config.hostList %}<li>{{ host }}</li>{% set hostCount = hostCount + 1 %}{% endfor %}
     </ul>
     </div> -->
+{% set hostsToDisplay = host.count() %}
 
 <table width="100%">
   <thead>
