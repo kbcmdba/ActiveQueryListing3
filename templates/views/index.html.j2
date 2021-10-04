@@ -33,12 +33,13 @@
 
   </thead>
   <tbody id="tbodyid">
-    {% for host in config.hostList %}<li>{{ host }}</li>{% set hostCount = hostCount + 1 %}{% endfor %}
+    {% for host in config.hostList %}
     <tr id="figment-{{ host }}">
       <td colspan="14">
         <center>Data loading for <a href="">{{ host }}</a>.</center>
       </td>
     </tr>
+    {% endfor %}
   </tbody>
 </table>
 
