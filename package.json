@@ -9,7 +9,7 @@
         "dev": "nodemon src/app.js -e js,j2,css"
     },
     "author": "Kevin Benton",
-    "license": "GPLv2",
+    "license": "GPL-2.0-only",
     "dependencies": {
         "express": "4.17.1",
         "mariadb": "^2.4.2",
