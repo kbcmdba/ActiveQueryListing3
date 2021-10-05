@@ -1,10 +1,16 @@
 {% extends "pageLayout.html.j2" %}
 
-{% block headAddOns %}<meta http-equiv="refresh" content="{% if refreshSeconds %}{{ refreshSeconds }}{% else %}60{% endif %}" />{% endblock %}
+{% block headAddOns %}<meta http-equiv="refresh" content="{% if refreshSeconds %}{{ refreshSeconds }}{% else %}60{% set refreshSeconds = 60 %}{% endif %}" />{% endblock %}
 
-{% block pageTop %}    <div class="title">{{ config.appTitle }}</div>
+{% block pageTop %}
+    <div class="title">{{ config.appTitle }}</div>
     {% if config.appAuthor %}<div class="author">By: {{ config.appAuthor }}</div>{% endif %}
     <button id="toggleButton" onclick="togglePageRefresh(); return false;">Turn Automatic Refresh Off</button>
+    <div class="timeBox">
+      Refresh every <input type=number value="{{ refreshSeconds }}" size=3 /> seconds <input type="submit" value="Update" /><br />
+      <input type="button" name="chooseHosts" value="Choose Hosts" />
+      <input type="button" name="debugToggle" value="Turn Debug On/Off" />
+    </div>
 {% endblock %}
 
 {% set hostCount = 0 %}
