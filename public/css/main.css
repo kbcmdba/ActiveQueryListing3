@@ -11,7 +11,7 @@ table thead th { text: black bold; background-color: silver; }
 .pageTop { width: 100%; display: table; }
 .pageTopRow { display: table-row; }
 .pageTopLeft { display: table-cell; }
-.pageTopRight { display: table-cell; }
+.pageTopRight { display: table-cell; align: right; }
 .title { }
 .timeBox { }
 .dateStamp { text-align: right; }
