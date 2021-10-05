@@ -9,7 +9,7 @@
 table thead th { text: black bold; background-color: silver; }
 
 .pageTop { display: inline-block; }
-.pageTopLeft { display: inline-block; }
-.pageTopRight { display: inline-block; }
+.pageTopLeft { display: inline-block; vertical-align: top; }
+.pageTopRight { display: inline-block; vertical-align: top; }
 .title { display: inline-block; }
 .timeBox { display: inline-block; }
