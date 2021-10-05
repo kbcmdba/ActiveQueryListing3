@@ -7,3 +7,9 @@
 .level0 { text: black; background-color: white;      }
 
 table thead th { text: black bold; background-color: silver; }
+
+.pageTop { display: inline-block; }
+.pageTopLeft { display: inline-block; }
+.pageTopRight { display: inline-block; }
+.title { display: inline-block; }
+.timeBox { display: inline-block; }
