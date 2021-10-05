@@ -1,6 +1,8 @@
 {% extends "pageLayout.html.j2" %}
 
-{% block headAddOns %}<meta http-equiv="refresh" content="{% if refreshSeconds %}{{ refreshSeconds }}{% else %}60{% set refreshSeconds = 60 %}{% endif %}" />{% endblock %}
+{% if refresSeconds > 5 %}{% else %}{% set refreshSeconds = 60 %}{% endif %}
+
+{% block headAddOns %}<meta http-equiv="refresh" content="{{ refreshSeconds }}" />{% endblock %}
 
 {% block pageTop %}
     <div class="pageTop">
@@ -12,7 +14,7 @@
         </div>
         <div class="pageTopRight">
           <div class="timeBox">
-            Refresh every <input type=number value="{{ refreshSeconds }}" size=3 /> seconds <input type="submit" value="Update" /><br />
+            Refresh every <input type=number value="{{ refreshSeconds }}" size="3" /> seconds <input type="submit" value="Update" /><br />
             <input type="button" name="chooseHosts" value="Choose Hosts" />
             <input type="button" name="debugToggle" value="Turn Debug On/Off" />
           </div>
