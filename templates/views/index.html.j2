@@ -6,20 +6,22 @@
 
 {% block pageTop %}
     <div class="pageTop">
-      <div class="pageTopRow">
-        <div class="pageTopLeft">
-          <div class="title">{{ config.appTitle }}</div>
-          {% if config.appAuthor %}<div class="author">By: {{ config.appAuthor }}</div>{% endif %}
-          <button id="toggleButton" onclick="togglePageRefresh(); return false;">Turn Automatic Refresh Off</button>
-        </div>
-        <div class="pageTopRight">
-          <div class="timeBox">
-            Refresh every <input type="number" value="{{ refreshSeconds }}" size="4" maxlength="4" /> seconds <input type="submit" value="Update" /><br />
-            <input type="button" name="chooseHosts" value="Choose Hosts" />
-            <input type="button" name="debugToggle" value="Turn Debug On/Off" />
-          </div>
-        </div>
-      </div>
+      <table width="100%">
+        <tr>
+          <td>
+            <div class="title">{{ config.appTitle }}</div>
+            {% if config.appAuthor %}<div class="author">By: {{ config.appAuthor }}</div>{% endif %}
+            <button id="toggleButton" onclick="togglePageRefresh(); return false;">Turn Automatic Refresh Off</button>
+          </td>
+          <td align="right">
+            <div class="timeBox">
+              Refresh every <input type="number" value="{{ refreshSeconds }}" size="4" maxlength="4" /> seconds <input type="submit" value="Update" /><br />
+              <input type="button" name="chooseHosts" value="Choose Hosts" />
+              <input type="button" name="debugToggle" value="Turn Debug On/Off" />
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
 {% endblock %}
 
