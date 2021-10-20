@@ -5,7 +5,7 @@ Active Query Listing 3 for MySQL (NodeJS)
 For a successful run *my* Fedora 33 system, I did the following: (your mileage may vary)
 
 ```
-$ sudo dnf install -y nodejs npm redis
+$ sudo dnf install -y nodejs npm redis lynx
 $ sudo systemctl enable redis
 $ sudo systemctl start redis
 $ sudo mysql_secure_installation

@@ -3,4 +3,4 @@ package-lock.json
 config
 *~
 ignore.txt
-Makefile
+run_app_in_nodemon
