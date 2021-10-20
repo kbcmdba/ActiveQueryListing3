@@ -12,6 +12,9 @@ const publicDirectoryPath = path.join( __dirname, '../public' )
 const viewsPath = path.join( __dirname, '../templates/views' )
 const partialsPath = path.join( __dirname, '../templates/partials' )
 
+//
+// Set up public directory for static page distribution. Ignore dotfiles and don't auto-index.
+//
 app.use( express.static( publicDirectoryPath, {
   dotfiles: 'ignore',
   extensions: [ 'htm', 'html' ],
@@ -19,26 +22,25 @@ app.use( express.static( publicDirectoryPath, {
 } ) )
 
 const redisClient = redis.createClient()
+redisClient.on( 'error', ( error ) => {
+  console.error( error )
+} )
 
-redisClient.on('error', (error) => {
-  console.error(error);
-});
-
-redisClient.set('redisCheck', 'allIsWell', (err, res) => {
-    if (err) {
-        return(console.log(err))
+redisClient.set( 'redisCheck', 'allIsWell', ( err, res ) => {
+    if ( err ) {
+        return( console.log( err ) )
     }
-    console.log( 'set.redisCheck', res)
-})
+    console.log( 'set.redisCheck', res )
+} )
 
 redisClient.expire('redisCheck', 3)
 
-redisClient.get('redisCheck', (err, res) => {
-    if (err) {
+redisClient.get( 'redisCheck', ( err, res ) => {
+    if ( err ) {
         return( console.log( err ) )
     }
     console.log( 'get.redisCheck', res )
-})
+} )
 
 const myGetHostList = async() => {
     hostListResult = await mymariadb.getHostList()
@@ -55,145 +57,188 @@ myGetHostList().then( val => customConfig.hostList = val )
 const env = nunjucks.configure( [ viewsPath ], {
     autoescape: true, 
     express: app
-})
+} )
 
 const hostQueryList = async( host ) => await mymariadb.getProcessList( host )
 const replicationStatus = async( host ) => await mymariadb.getReplicationStatus( host )
 
+//
+// Return the number of seconds that a MySQL/MariaDB server has been up
+//
 async function getUptime( host ) {
     var foo = await mymariadb.getUptime( host )
     return( foo[0].Value )
 }
 
+//
+// Actually get the host information and stick the data into an object that's returned
+//
 async function getHostInfo( host ) {
     hql = await hostQueryList( host )
     rs = await replicationStatus( host )
     ut = await getUptime( host )
-    return({
+    return( {
         hostname: host,
         processList: hql,
         replicationStatus: rs,
         upTimeSeconds: ut,
         loadLevel: -1
-    })
+    } )
 }
 
+//
+// Register the myFilter function for nunJucks calls
+//
 env.addFilter( 'myFilter', ( obj, arg1, arg2 ) => {
     console.log('myFilter', obj, arg1, arg2 )
     // Do something with obj
     return obj  
-})
+} )
 
+//
+// Register the myFunc function for nunJucks calls
+//
 env.addGlobal( 'myFunc', ( obj, arg1 ) => { 
     console.log( 'myFunc', obj, arg1 )
     // Do something with obj
     return obj
 })
 
+//
+// Register the getDate function for nunJucks calls
+//
 env.addGlobal( 'getDate', ( obj ) => {
     return new Date().toString()
 } )
 
+//
+// Index
+//
 app.get( '', ( req, res ) => {
     console.log( 'root:', req.query )
     customConfig.appAuthor = 'Kevin Benton'
     res.render( 'index.html.j2', { config: customConfig } )
-})
+} )
 
+//
+// Index
+//
 app.get( '/', ( req, res ) => {
     console.log( 'root:/', req.query )
     customConfig.appAuthor = 'Kevin Benton'
     res.render( 'index.html.j2', { config: customConfig } )
-})
+} )
 
+//
+// Testing
+//
 app.get( '/foo', ( req, res ) => {
     res.locals.smthVar = 'This is Sparta!'
     res.render( 'foo.html.j2', { title: 'Foo page' } )    
-})
+} )
 
-app.get('/about', (req, res) => {
-    res.render('about.html.j2', {
+//
+// Tell them about us
+//
+app.get( '/about', ( req, res ) => {
+    res.render( 'about.html.j2', {
         title: 'About AQL3',
         author: appAuthor
-    })
-})
+    } )
+} )
 
-app.get('/help', (req, res) => {
-    res.render('help.html.j2', {
+//
+// Render some help
+//
+app.get( '/help', ( req, res ) => {
+    res.render( 'help.html.j2', {
         title: 'Help Page',
         author: appAuthor,
         helpMsg: 'This is some help.'
-    })
-})
+    } )
+} )
 
-app.get('/server-list', (req, res) => {
-    if (!req.query.search) {
-        return res.send(JSON.stringify(customConfig.hostList) + '\n')
+//
+// Get the list of supported servers
+//
+app.get( '/server-list', ( req, res ) => {
+    if ( ! req.query.search ) {
+        return res.send( JSON.stringify( customConfig.hostList ) + '\n' )
     }
-    console.log( '/server-list', req.query)
-    return res.send(JSON.stringify(customConfig.hostList) + '\n')
-})
+    console.log( '/server-list', req.query )
+    return res.send( JSON.stringify( customConfig.hostList ) + '\n' )
+} )
 
-app.get('/server-info', async(req, res) => {
+//
+// Get the processlist and replication status from a host
+//
+app.get( '/server-info', async( req, res ) => {
     if ( ! req.query.host ) {
-        return res.send(JSON.stringify({ error: 'You must provide a search term' }) + '\n')
+        return res.send( JSON.stringify( { error: 'You must provide a search term' } ) + '\n' )
     }
     console.log( '/server-info', req.query )
-    if (! customConfig.hostList.includes( req.query.host ) ) {
-        return res.send(JSON.stringify({
-            error: 'Host not supported.'
-        }) + '\n')
+    if ( ! customConfig.hostList.includes( req.query.host ) ) {
+        return res.send( JSON.stringify( { error: 'Host not supported.' } ) + '\n' )
     }
     // This is where we could get the show processlist info from the remote host as
     // well as the replication status
     ghi = await getHostInfo( req.query.host )
-    res.send( JSON.stringify( ghi ) + '\n')
-})
+  res.send( JSON.stringify( ghi ) + '\n')
+} )
 
-app.get('/server-queries', async(req, res) => {
+//
+// List the queries on the server.
+//
+app.get( '/server-queries', async( req, res ) => {
     if ( ! req.query.host ) {
-        return res.send(JSON.stringify({ error: 'You must provide a search term' }) + '\n')
+        return res.send( JSON.stringify( { error: 'You must provide a search term' } ) + '\n' )
     }
     console.log( '/server-queries', req.query )
-    if (! customConfig.hostList.includes( req.query.host ) ) {
-        return res.send(JSON.stringify({
-            error: 'Host not supported.'
-        }) + '\n')
+    if ( ! customConfig.hostList.includes( req.query.host ) ) {
+        return res.send( JSON.stringify( { error: 'Host not supported.' } ) + '\n' )
     }
     hql = await hostQueryList( req.query.host )
     res.send( JSON.stringify( hql ) + '\n')
-})
+} )
 
-app.get('/server-slave-status', async(req, res) => {
+//
+// Show the slave status(es) on a given server
+//
+app.get( '/server-slave-status', async( req, res ) => {
     if ( ! req.query.host ) {
-        return res.send(JSON.stringify({ error: 'You must provide a search term' }) + '\n')
+        return res.send( JSON.stringify( { error: 'You must provide a search term' } ) + '\n' )
     }
     console.log( '/server-slave-status', req.query )
     if (! customConfig.hostList.includes( req.query.host ) ) {
-        return res.send(JSON.stringify({
-            error: 'Host not supported.'
-        }) + '\n')
+        return res.send(JSON.stringify({ error: 'Host not supported.' } ) + '\n' )
     }
     rs = await replicationStatus( req.query.host )
     res.send( JSON.stringify( rs ) + '\n')
-})
+} )
 
+//
 // Help 404 handler
-app.get('/help/*', (req, res) => {
+//
+app.get( '/help/*', ( req, res ) => {
     res.render( '404.html.j2', {
         title: '404',
         errorMsg: 'Help article not found.'
-    })
-})
+    } )
+} )
 
+//
 // Generic 404 handler
-app.get('*', (req, res) => {
+//
+app.get( '*', ( req, res ) => {
     res.render( '404.html.j2', {
         title: '404',
         errorMsg: 'Page not found.'
-    })
-})
+    } )
+} )
 
-app.listen(port, () => {
+//
+// Web server listener
+//
+app.listen( port, () => {
     console.log('Server is up on port ' + port + '.')
-})
+} )
