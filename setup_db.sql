@@ -34,7 +34,7 @@
 
 -- In Oracle's MySQL:
 --
--- GRANT PROCESS, REPLICATION_CLIENT ON *.* to 'app_aql'@'127.0.0.1' IDENTIFIED BY ...
+-- GRANT PROCESS, REPLICATION CLIENT ON *.* to 'app_aql'@'127.0.0.1' IDENTIFIED BY ...
 -- GRANT ALL ON aql3_db.* to 'app_aql'@'127.0.0.1' ;
 
 
