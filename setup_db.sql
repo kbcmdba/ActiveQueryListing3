@@ -34,7 +34,8 @@
 
 -- In Oracle's MySQL:
 --
--- GRANT PROCESS, REPLICATION CLIENT ON *.* to 'app_aql'@'127.0.0.1' IDENTIFIED BY ...
+-- CREATE USER 'app_aql'@'127.0.0.1' IDENTIFIED BY ...
+-- GRANT PROCESS, REPLICATION_CLIENT ON *.* to 'app_aql'@'127.0.0.1' ;
 -- GRANT ALL ON aql3_db.* to 'app_aql'@'127.0.0.1' ;
 
 
@@ -75,9 +76,9 @@ VALUES ( 1                 -- id
        , 5                 -- alert_warn_secs
        , 2                 -- alert_info_secs
        , -1                -- alert_low_secs
-       , NULL              -- created
-       , NULL              -- updated
-       , NULL              -- last_audited
+       , NOW()             -- created
+       , NOW()             -- updated
+       , NOW()             -- last_audited
     ), ( 2                 -- id
        , '127.0.0.1'       -- hostname
        , 'localhostx2'     -- description
@@ -89,9 +90,9 @@ VALUES ( 1                 -- id
        , 5                 -- alert_warn_secs
        , 2                 -- alert_info_secs
        , -1                -- alert_low_secs
-       , NULL              -- created
-       , NULL              -- updated
-       , NULL              -- last_audited
+       , NOW()             -- created
+       , NOW()             -- updated
+       , NOW()             -- last_audited
     ), ( 3                 -- id
        , '192.168.256.256' -- hostname
        , 'Bad host'        -- description
@@ -103,9 +104,9 @@ VALUES ( 1                 -- id
        , 5                 -- alert_warn_secs
        , 2                 -- alert_info_secs
        , -1                -- alert_low_secs
-       , NULL              -- created
-       , NULL              -- updated
-       , NULL              -- last_audited
+       , NOW()             -- created
+       , NOW()             -- updated
+       , NOW()             -- last_audited
      ) ;
 
 CREATE TABLE host_group (
@@ -120,12 +121,12 @@ CREATE TABLE host_group (
      ) ENGINE=InnoDB ;
 
 INSERT host_group
-VALUES ( 1, 'localhost', 'localhost', 'localhost in all forms', NULL, NULL )
-     , ( 2, 'prod'     , 'prod'     , 'Production'            , NULL, NULL )
-     , ( 3, 'pilot'    , 'pilot'    , 'Pilot'                 , NULL, NULL )
-     , ( 4, 'stage'    , 'stage'    , 'Staging'               , NULL, NULL )
-     , ( 5, 'qa'       , 'qa'       , 'QA'                    , NULL, NULL )
-     , ( 6, 'dev'      , 'dev'      , 'Development'           , NULL, NULL )
+VALUES ( 1, 'localhost', 'localhost', 'localhost in all forms', NOW(), NOW() )
+     , ( 2, 'prod'     , 'prod'     , 'Production'            , NOW(), NOW() )
+     , ( 3, 'pilot'    , 'pilot'    , 'Pilot'                 , NOW(), NOW() )
+     , ( 4, 'stage'    , 'stage'    , 'Staging'               , NOW(), NOW() )
+     , ( 5, 'qa'       , 'qa'       , 'QA'                    , NOW(), NOW() )
+     , ( 6, 'dev'      , 'dev'      , 'Development'           , NOW(), NOW() )
      ;
 
 CREATE TABLE host_group_map (
@@ -143,7 +144,7 @@ CREATE TABLE host_group_map (
      ) ENGINE=InnoDB COMMENT='Many-many relationship of groups and host' ;
 
 INSERT host_group_map
-VALUES ( 1, 1, NULL, NULL, NULL )
-     , ( 1, 2, NULL, NULL, NULL )
+VALUES ( 1, 1, NOW(), NOW(), NOW() )
+     , ( 1, 2, NOW(), NOW(), NOW() )
      ;
 
