@@ -6,7 +6,8 @@ async function _doMySQLStatement( hostname, statement ) {
     await Promise.all([ mariadb.createConnection({ host: hostname,
                                                  database: process.env.DB_NAME,
                                                  user: process.env.DB_USER,
-                                                 password: process.env.DB_PASS
+                                                 password: process.env.DB_PASS,
+                                                 allowPublicKeyRetrieval: true
     })
     .then(async conn => {
         await Promise.all([ conn.query( statement )
