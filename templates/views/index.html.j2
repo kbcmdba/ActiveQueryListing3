@@ -75,4 +75,28 @@
   <tr class="level0"><td>0</td><td>The shown query has run for less time than expected so far.</td></tr>
 </table>
 
+<script>
+
+var timeoutId = null;
+var reloadSeconds = $reloadSeconds * 1000 ;
+
+///////////////////////////////////////////////////////////////////////////////
+
+function loadPage() {
+    $("#tbodyid").html( '<tr id="figment"><td colspan="14"><center>Data loading</center></td></tr>' ) ;
+    $.when( {{ whenBlock }} ).then(
+        function ( {{ thenParamBlock }} ) { {{ thenCodeBlock }}
+            $("#figment").remove()
+            $("#dataTable").tablesorter( {sortList: [[1,1], [7, 1]]} )
+            displayCharts()
+        }
+    )
+    $('#tbodyid').on('click', '.morelink', flipFlop)
+    timeoutId = setTimeout( function() {
+        window.location.reload( 1 )
+    }, reloadSeconds )
+}
+
+$(document).ready( loadPage ) ;
+</script>
 {% endblock %}
