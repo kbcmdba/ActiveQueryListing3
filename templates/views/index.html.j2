@@ -1,6 +1,6 @@
 {% extends "pageLayout.html.j2" %}
 
-{% if refresSeconds > 5 %}{% else %}{% set refreshSeconds = 60 %}{% endif %}
+{% if refreshSeconds > 5 %}{% else %}{% set refreshSeconds = 60 %}{% endif %}
 
 {% block headAddOns %}<meta http-equiv="refresh" content="{{ refreshSeconds }}" />{% endblock %}
 
@@ -84,8 +84,8 @@ var reloadSeconds = $reloadSeconds * 1000 ;
 
 function loadPage() {
     $("#tbodyid").html( '<tr id="figment"><td colspan="14"><center>Data loading</center></td></tr>' ) ;
-    $.when( {{ whenBlock }} ).then(
-        function ( {{ thenParamBlock }} ) { {{ thenCodeBlock }}
+    $.when( {{ config.whenBlock }} ).then(
+        function ( {{ config.thenParamBlock }} ) { {{ config.thenCodeBlock }}
             $("#figment").remove()
             $("#dataTable").tablesorter( {sortList: [[1,1], [7, 1]]} )
             displayCharts()

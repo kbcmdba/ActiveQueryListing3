@@ -111,6 +111,22 @@ env.addGlobal( 'getDate', ( obj ) => {
     return new Date().toString()
 } )
 
+/*
+
+    $js['WhenBlock'] .= "$prefix\$.getJSON( \"$baseUrl?hostname=$hostname&alertCritSecs=$alertCritSecs&alertWarnSecs=$alertWarnSecs&alertInfoSecs=$alertInfoSecs&alertLowSecs=$alertLowSecs$debug\")" ;
+    $js['ThenParamBlock'] .= "$prefix res$blockNum" ;
+    if( count(Tools::params('hosts')) === 1 ) {
+        $js['ThenCodeBlock'] = "myCallback( $blockNum, res$blockNum )" ;
+    } else {
+        $js['ThenCodeBlock'] .= "\n            \$.each(res$blockNum, myCallback) ;" ;
+    }
+
+*/
+
+customConfig.whenBlock = '$.getJSON( "http://127.0.0.1:8081/server-queries?host=127.0.0.1&alertCritSecs=60&alertWarnSecs=30&alertInfoSecs=5&alertLowSecs=-1&debug=1" )'
+customConfig.thenParamBlock = " res1"
+customConfig.thenCodeBlock = "  myCallback( 1, res1 )"
+
 //
 // Index
 //
