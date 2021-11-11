@@ -230,7 +230,7 @@ var base_counts = {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function myCallback( i, item ) {
+function myCallback( i, item, host ) {
     const showChars       = 40;
     var itemNo            = 0;
     var level             = -1;

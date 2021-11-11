@@ -159,7 +159,7 @@ app.get( '/foo', ( req, res ) => {
 app.get( '/about', ( req, res ) => {
     res.render( 'about.html.j2', {
         title: 'About AQL3',
-        author: appAuthor
+        author: customConfig.appAuthor
     } )
 } )
 
@@ -169,7 +169,7 @@ app.get( '/about', ( req, res ) => {
 app.get( '/help', ( req, res ) => {
     res.render( 'help.html.j2', {
         title: 'Help Page',
-        author: appAuthor,
+        author: customConfig.appAuthor,
         helpMsg: 'This is some help.'
     } )
 } )
